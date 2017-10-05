@@ -10,6 +10,7 @@ namespace Sokoban
     {
         static void Main(string[] args)
         {
+            
         }
     }
 }
