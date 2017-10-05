@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sokoban
 {
-    public class InitialState
+    public class Context
     {
         int[][] map;
 
@@ -37,7 +37,7 @@ namespace Sokoban
             }
         }
 
-        public InitialState(int[][] map, Coord target1, Coord target2)
+        public Context(int[][] map, Coord target1, Coord target2)
         {
             this.map = map;
             this.target1 = target1;

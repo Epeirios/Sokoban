@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Coord.cs" />
-    <Compile Include="InitialState.cs" />
+    <Compile Include="Context.cs" />
     <Compile Include="State.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

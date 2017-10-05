@@ -8,7 +8,7 @@ namespace Sokoban
 {
     public class State
     {
-        private InitialState initialState;
+        private Context initialState;
         private State previousState;
         private int heuristic;
 
@@ -56,7 +56,7 @@ namespace Sokoban
             }
         }
 
-        public State(InitialState initialState, State previousState, Coord player, Coord chest1, Coord chest2)
+        public State(Context initialState, State previousState, Coord player, Coord chest1, Coord chest2)
         {
             this.initialState = initialState;
             this.previousState = previousState;
