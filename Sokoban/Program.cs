@@ -10,6 +10,12 @@ namespace Sokoban
     {
         static void Main(string[] args)
         {
+            // aanname is dat er een oplossing gevonden kan worden.
+            // als de oplossing gevonden is dan is de laatste state de currentstate,
+            // welke dan gelijk is aan de goal state.
+
+            // 
+
             SortedList<int, State> F = new SortedList<int, State>();
 
             while (F.Count != 0)
