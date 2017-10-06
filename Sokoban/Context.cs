@@ -8,12 +8,11 @@ namespace Sokoban
 {
     public class Context
     {
-        int[][] map;
+        bool[][] map;
 
-        Coord target1;
-        Coord target2;
+        Coord[] targets;
 
-        public int[][] Map
+        public bool[][] Map
         {
             get
             {
@@ -21,27 +20,18 @@ namespace Sokoban
             }
         }
 
-        public Coord Target1
+        public Coord[] Targets
         {
             get
             {
-                return target1;
+                return targets;
             }
         }
 
-        public Coord Target2
-        {
-            get
-            {
-                return target2;
-            }
-        }
-
-        public Context(int[][] map, Coord target1, Coord target2)
+        public Context(bool[][] map, Coord[] targets)
         {
             this.map = map;
-            this.target1 = target1;
-            this.target2 = target2;
+            this.targets = targets;
         }
     }
 }
