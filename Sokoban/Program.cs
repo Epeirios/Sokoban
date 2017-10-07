@@ -29,17 +29,19 @@ namespace Sokoban
             };
 
             State startState = new State(
-                new Context(map, new Coord[] { new Coord(0, 3), new Coord(0, 4) }), 
+                new Context(map, new Coord[] { new Coord(1, 4), new Coord(1, 5) }), 
                 null, 
-                new Coord(0, 0), 
-                new Coord[] { new Coord(1, 2), new Coord(1, 3) },
+                new Coord(1, 1), 
+                new Coord[] { new Coord(2, 3), new Coord(2, 4) },
                 0);
 
             F.Add(startState.Heuristic, startState);
 
             while (F.Count != 0)
             {
-                State currentState = F[0];
+                State currentState = F.Values[0];
+                Console.WriteLine("State : " + currentState.Player.X + " " + currentState.Player.Y);
+
                 F.RemoveAt(0);
 
                 if (currentState.GoalCheck())
@@ -53,6 +55,8 @@ namespace Sokoban
                     F.Add(state.Heuristic, state);
                 }
             }
+
+            Console.ReadKey();
         }
     }
 }
