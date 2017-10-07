@@ -46,6 +46,7 @@ namespace Sokoban
 
                 if (currentState.GoalCheck())
                 {
+                    Console.WriteLine("Fuck Yeah!!!");
                     break;
                 }
 
