@@ -16,12 +16,17 @@ namespace Sokoban
 
             SortedList<int, State> F = new SortedList<int, State>();
 
-            bool[,] map = new bool[,] { { true, true, true },
-                                        { true, true, true },
-                                        { true, true, true },
-                                        { true, true, false },
-                                        { true, true, false },
-                                        { true, true, false }, };
+            bool[,] map = new bool[,] 
+            { 
+                { false, false, false, false, false },
+                { false, true, true, true, false },
+                { false, true, true, true, false },
+                { false, true, true, true, false },
+                { false, true, true, false, false },
+                { false, true, true, false, false },
+                { false, true, true, false, false },
+                { false, false, false, false, false },
+            };
 
             State startState = new State(
                 new Context(map, new Coord[] { new Coord(0, 3), new Coord(0, 4) }), 
