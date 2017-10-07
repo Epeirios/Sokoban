@@ -27,7 +27,8 @@ namespace Sokoban
                 new Context(map, new Coord[] { new Coord(0, 3), new Coord(0, 4) }), 
                 null, 
                 new Coord(0, 0), 
-                new Coord[] { new Coord(1, 2), new Coord(1, 3) });
+                new Coord[] { new Coord(1, 2), new Coord(1, 3) },
+                0);
 
             F.Add(startState.Heuristic, startState);
 

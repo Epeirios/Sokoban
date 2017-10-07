@@ -11,6 +11,7 @@ namespace Sokoban
         private Context context;
         private State previousState;
         private int heuristic;
+        private int countPreviousSteps;
 
         private Coord player;
         private Coord[] chests;
@@ -49,12 +50,13 @@ namespace Sokoban
             }
         }
 
-        public State(Context context, State previousState, Coord player, Coord[] chests)
+        public State(Context context, State previousState, Coord player, Coord[] chests, int countPreviousSteps)
         {
             this.context = context;
             this.previousState = previousState;
             this.player = player;
             this.chests = chests;
+            this.countPreviousSteps = countPreviousSteps + 1;
 
             CalcHeuristic();
         }
@@ -106,28 +108,28 @@ namespace Sokoban
                     switch (direction)
                     {
                         case Direction.Up:
-                            if (context.Map[y - 1][x])
+                            if (context.Map[y - 1, x])
                             {
                                 newChests[i].Y = newChests[i].Y - 1;
                             }
                             break;
 
                         case Direction.Down:
-                            if (context.Map[y + 1][x])
+                            if (context.Map[y + 1, x])
                             {
                                 newChests[i].Y = newChests[i].Y + 1;
                             }
                             break;
 
                         case Direction.Left:
-                            if (context.Map[y][x - 1])
+                            if (context.Map[y, x - 1])
                             {
                                 newChests[i].X = newChests[i].X - 1;
                             }
                             break;
 
                         case Direction.Right:
-                            if (context.Map[y][x + 1])
+                            if (context.Map[y, x + 1])
                             {
                                 newChests[i].X = newChests[i].X + 1;
                             }
@@ -142,9 +144,9 @@ namespace Sokoban
 
         private State NewState(int x, int y, Coord[] chests)
         {
-            if (context.Map[y][x])
+            if (context.Map[y, x])
             {
-                return new State(context, this, new Coord(x, y), chests);
+                return new State(context, this, new Coord(x, y), chests, countPreviousSteps);
             } else {
                 return null;
             }
@@ -164,7 +166,7 @@ namespace Sokoban
 
         private void CalcHeuristic()
         {
-            heuristic = 0;
+            heuristic = 0 + countPreviousSteps;
         }        
     }
 }
