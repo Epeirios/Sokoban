@@ -47,8 +47,6 @@ namespace Sokoban
                     F.Add(state.Heuristic, state);
                 }
             }
-
-
         }
     }
 }
