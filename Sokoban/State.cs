@@ -61,15 +61,44 @@ namespace Sokoban
 
         public State[] NextStates()
         {
+            foreach(Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                int x = player.X;
+                int y = player.Y;
+                Coord[] newChests = chests;
+
+                switch(direction)
+                {
+                    case Direction.Up:
+                        y = y - 1;
+                        break;
+                    case Direction.Down:
+                        y = y + 1;
+                        break;
+                    case Direction.Left:
+                        x = x - 1;
+                        break;
+                    case Direction.Right:
+                        x = x + 1;
+                        break;
+                }
+
+                
+            }
             
             return null;
         }
 
-        private State NewState(int x, int y, Coord[] chests)
+        private Coord[] NewChests(int x, int y, Direction direction)
         {
-            if (context.Map[y][x])
+            return null;
+        }
+
+        private State NewState(int newPlayerX, int newPlayerY, Coord[] chests)
+        {
+            if (context.Map[newPlayerY][newPlayerX])
             {
-                return new State(context, this, new Coord(x, y), chests);
+                return new State(context, this, new Coord(newPlayerX, newPlayerY), chests);
             } else {
                 return null;
             }
