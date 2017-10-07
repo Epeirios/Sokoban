@@ -8,11 +8,11 @@ namespace Sokoban
 {
     public class Context
     {
-        bool[][] map;
+        bool[,] map;
 
         Coord[] targets;
 
-        public bool[][] Map
+        public bool[,] Map
         {
             get
             {
@@ -28,7 +28,7 @@ namespace Sokoban
             }
         }
 
-        public Context(bool[][] map, Coord[] targets)
+        public Context(bool[,] map, Coord[] targets)
         {
             this.map = map;
             this.targets = targets;

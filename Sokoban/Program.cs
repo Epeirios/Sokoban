@@ -14,9 +14,22 @@ namespace Sokoban
             // als de oplossing gevonden is dan is de laatste state de currentstate,
             // welke dan gelijk is aan de goal state.
 
-            // 
-
             SortedList<int, State> F = new SortedList<int, State>();
+
+            bool[,] map = new bool[,] { { true, true, true },
+                                        { true, true, true },
+                                        { true, true, true },
+                                        { true, true, false },
+                                        { true, true, false },
+                                        { true, true, false }, };
+
+            State startState = new State(
+                new Context(map, new Coord[] { new Coord(0, 3), new Coord(0, 4) }), 
+                null, 
+                new Coord(0, 0), 
+                new Coord[] { new Coord(1, 2), new Coord(1, 3) });
+
+            F.Add(startState.Heuristic, startState);
 
             while (F.Count != 0)
             {
