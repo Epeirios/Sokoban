@@ -1,0 +1,6 @@
+C:\Users\Martijn Blokland\Documents\Sokoban\Sokoban\bin\Debug\Sokoban.exe.config
+C:\Users\Martijn Blokland\Documents\Sokoban\Sokoban\bin\Debug\Sokoban.exe
+C:\Users\Martijn Blokland\Documents\Sokoban\Sokoban\bin\Debug\Sokoban.pdb
+C:\Users\Martijn Blokland\Documents\Sokoban\Sokoban\obj\Debug\Sokoban.csprojResolveAssemblyReference.cache
+C:\Users\Martijn Blokland\Documents\Sokoban\Sokoban\obj\Debug\Sokoban.exe
+C:\Users\Martijn Blokland\Documents\Sokoban\Sokoban\obj\Debug\Sokoban.pdb
