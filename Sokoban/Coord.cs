@@ -17,6 +17,10 @@ namespace Sokoban
             {
                 return x;
             }
+            set
+            {
+                x = value;
+            }
         }
 
         public int Y
@@ -24,6 +28,10 @@ namespace Sokoban
             get
             {
                 return y;
+            }
+            set
+            {
+                y = value;
             }
         }
 

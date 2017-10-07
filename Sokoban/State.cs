@@ -14,6 +14,8 @@ namespace Sokoban
 
         private Coord player;
         private Coord[] chests;
+        private State state;
+        private Coord coord;
 
         public State PreviousState
         {
@@ -59,6 +61,8 @@ namespace Sokoban
 
         public State[] NextStates()
         {
+            List<State> nextStates = new List<State>();
+
             foreach(Direction direction in Enum.GetValues(typeof(Direction)))
             {
                 int x = player.X;
@@ -81,22 +85,66 @@ namespace Sokoban
                         break;
                 }
 
-                
+                newChests = NewChests(x, y, direction);
+                if (newChests != null)
+                {
+                    nextStates.Add(NewState(x, y, newChests));
+                }
             }
             
-            return null;
+            return nextStates.ToArray();
         }
 
         private Coord[] NewChests(int x, int y, Direction direction)
         {
+            Coord[] newChests = chests;
+
+            for(int i = 0; i < newChests.Length; i++)
+            {
+                if (newChests[i].Y == y && newChests[i].X == x)
+                {
+                    switch (direction)
+                    {
+                        case Direction.Up:
+                            if (context.Map[y - 1][x])
+                            {
+                                newChests[i].Y = newChests[i].Y - 1;
+                            }
+                            break;
+
+                        case Direction.Down:
+                            if (context.Map[y + 1][x])
+                            {
+                                newChests[i].Y = newChests[i].Y + 1;
+                            }
+                            break;
+
+                        case Direction.Left:
+                            if (context.Map[y][x - 1])
+                            {
+                                newChests[i].X = newChests[i].X - 1;
+                            }
+                            break;
+
+                        case Direction.Right:
+                            if (context.Map[y][x + 1])
+                            {
+                                newChests[i].X = newChests[i].X + 1;
+                            }
+                            break;
+                    }
+
+                    return newChests;
+                }
+            }
             return null;
         }
 
-        private State NewState(int newPlayerX, int newPlayerY, Coord[] chests)
+        private State NewState(int x, int y, Coord[] chests)
         {
-            if (context.Map[newPlayerY][newPlayerX])
+            if (context.Map[y][x])
             {
-                return new State(context, this, new Coord(newPlayerX, newPlayerY), chests);
+                return new State(context, this, new Coord(x, y), chests);
             } else {
                 return null;
             }
@@ -104,31 +152,19 @@ namespace Sokoban
 
         public bool GoalCheck()
         {
-            foreach (Coord chest in chests)
+            foreach(Coord target in context.Targets)
             {
-                bool correct = false;
-                
-                foreach (Coord target in context.Targets)
-                {
-                    if (chest == target)
-                    {
-                        correct = true;
-                        break;
-                    }
-                }
-
-                if (!correct)
+                if (chests.Where((Coord chest) => chest.X == target.X && chest.Y == target.Y).FirstOrDefault() == null)
                 {
                     return false;
                 }
             }
-
             return true;
         }
 
         private void CalcHeuristic()
         {
             heuristic = 0;
-        }
+        }        
     }
 }
