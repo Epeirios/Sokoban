@@ -14,6 +14,8 @@ namespace Sokoban
 
         private Coord player;
         private Coord[] chests;
+        private State state;
+        private Coord coord;
 
         public State PreviousState
         {
@@ -59,18 +61,16 @@ namespace Sokoban
 
         public State[] NextStates()
         {
-            //State[] nextStates
-
+            
             return null;
         }
 
-        private State NewState(int x, int y)
+        private State NewState(int x, int y, Coord[] chests)
         {
-            if (this.context.Map[y][x])
+            if (context.Map[y][x])
             {
-                return new State()
-            } else
-            {
+                return new State(context, this, new Coord(x, y), chests);
+            } else {
                 return null;
             }
         }
@@ -79,8 +79,12 @@ namespace Sokoban
         {
             foreach(Coord target in this.context.Targets)
             {
-                this.chests.Where((Coord chest) => chest.X == target.X)
+                if (chests.Where((Coord chest) => chest.X == target.X && chest.Y == target.Y).FirstOrDefault() == null)
+                {
+                    return false;
+                }
             }
+            return false;
         }
 
         private void CalcHeuristic()
