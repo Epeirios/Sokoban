@@ -17,6 +17,7 @@ namespace Sokoban
                 Console.WriteLine("Move : ");
                 Console.WriteLine("  - x : " + state.Player.X);
                 Console.WriteLine("  - y : " + state.Player.Y);
+                Console.WriteLine("{0} {1}", state.Chests[0].X, state.Chests[0].Y);
             }
         }
 
