@@ -8,6 +8,17 @@ namespace Sokoban
 {
     class Program
     {
+        private static void StateHistory(State state)
+        {
+            Console.WriteLine("Move : ");
+            Console.WriteLine("  - x : " + state.Player.X);
+            Console.WriteLine("  - y : " + state.Player.Y);
+            if (state.PreviousState != null)
+            {
+                StateHistory(state.PreviousState);
+            }
+        }
+
         static void Main(string[] args)
         {
             // aanname is dat er een oplossing gevonden kan worden.
@@ -40,14 +51,14 @@ namespace Sokoban
             while (F.Count != 0)
             {
                 State currentState = F[0].state;
-                Console.WriteLine("state : " + currentState.Player.X + " - " + currentState.Player.Y);
+                Console.WriteLine("State : " + currentState.Player.X + " - " + currentState.Player.Y);
 
                 F.RemoveAt(0);
 
                 if (currentState.GoalCheck())
                 {
                     Console.WriteLine("Solution Found!");
-
+                    StateHistory(currentState);
                     break;
                 }
 
