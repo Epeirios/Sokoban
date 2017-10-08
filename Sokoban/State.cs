@@ -11,7 +11,7 @@ namespace Sokoban
         private Context context;
         private State previousState;
         private int heuristic;
-        private int countPreviousSteps;
+        private int pathcost;
 
         private Coord player;
         private Coord[] chests;
@@ -24,11 +24,11 @@ namespace Sokoban
             }
         }
 
-        public int Heuristic
+        public int Cost
         {
             get
             {
-                return heuristic;
+                return pathcost;
             }
         }
 
@@ -48,15 +48,15 @@ namespace Sokoban
             }
         }
 
-        public State(Context context, State previousState, Coord player, Coord[] chests, int countPreviousSteps)
+        public State(Context context, State previousState, Coord player, Coord[] chests, int pathcost)
         {
             this.context = context;
             this.previousState = previousState;
             this.player = player;
             this.chests = chests;
-            this.countPreviousSteps = countPreviousSteps + 1;
+            this.pathcost = pathcost + 1;
 
-            CalcHeuristic();
+            this.heuristic = CalcHeuristic();
         }
 
         public State[] NextStates()
@@ -164,7 +164,7 @@ namespace Sokoban
         {
             if (context.Map[y, x])
             {
-                return new State(context, this, new Coord(x, y), chests, countPreviousSteps);
+                return new State(context, this, new Coord(x, y), chests, pathcost);
             }
             else
             {
@@ -184,9 +184,39 @@ namespace Sokoban
             return true;
         }
 
-        private void CalcHeuristic()
+        private int CalcHeuristic()
         {
-            heuristic = 0 + countPreviousSteps;
+            int heuristic = 0;
+
+            List<int> playerChestDistances = new List<int>();
+
+            foreach (Coord chest in chests)
+            {
+                int shortestpath = CalculateManhattan(context.Targets[0], chests[0]) - 1;
+
+                foreach (Coord target in context.Targets)
+                {
+                    int manhattan = CalculateManhattan(target, chest) - 1;
+
+                    if (manhattan < shortestpath)
+                    {
+                        shortestpath = manhattan;
+                    }
+                }
+
+                playerChestDistances.Add(CalculateManhattan(player, chest)); // distance from player to chest
+
+                heuristic += shortestpath; // add only the shortest to ensure optimality of algorithm
+            }
+
+            return heuristic + (int)playerChestDistances.Average();
+        }
+
+        private static int CalculateManhattan(Coord coordA, Coord coordB)
+        {
+            return Math.Abs(coordA.X - coordB.X) +
+                   Math.Abs(coordA.Y - coordB.Y);
+            // manhattan distance between 2 coordinates.
         }
     }
 }

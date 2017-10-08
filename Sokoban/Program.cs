@@ -10,12 +10,13 @@ namespace Sokoban
     {
         private static void StateHistory(State state)
         {
-            Console.WriteLine("Move : ");
-            Console.WriteLine("  - x : " + state.Player.X);
-            Console.WriteLine("  - y : " + state.Player.Y);
             if (state.PreviousState != null)
             {
                 StateHistory(state.PreviousState);
+
+                Console.WriteLine("Move : ");
+                Console.WriteLine("  - x : " + state.Player.X);
+                Console.WriteLine("  - y : " + state.Player.Y);
             }
         }
 
@@ -25,10 +26,10 @@ namespace Sokoban
             // als de oplossing gevonden is dan is de laatste state de currentstate,
             // welke dan gelijk is aan de goal state.
 
-            List<StateWrapper> F = new List<StateWrapper>();
+            List<State> F = new List<State>();
 
-            bool[,] map = new bool[,] 
-            { 
+            bool[,] map = new bool[,]
+            {
                 { false, false, false, false, false },
                 { false, true, true, true, false },
                 { false, true, true, true, false },
@@ -40,18 +41,18 @@ namespace Sokoban
             };
 
             State startState = new State(
-                new Context(map, new Coord[] { new Coord(3, 6) }), 
-                null, 
-                new Coord(1, 1), 
+                new Context(map, new Coord[] { new Coord(3, 6) }),
+                null,
+                new Coord(1, 1),
                 new Coord[] { new Coord(2, 3) },
                 0);
 
-            F.Add(new StateWrapper(startState.Heuristic, startState));
+            F.Add(startState);
 
             while (F.Count != 0)
             {
-                State currentState = F[0].state;
-                Console.WriteLine("State : " + currentState.Player.X + " - " + currentState.Player.Y);
+                State currentState = F[0];
+                Console.WriteLine("State : {0} {1} - {2} - {3} {4}", currentState.Player.X, currentState.Player.Y, currentState.Cost, currentState.Chests[0].X, currentState.Chests[0].Y);
 
                 F.RemoveAt(0);
 
@@ -62,11 +63,9 @@ namespace Sokoban
                     break;
                 }
 
-                State[] nextStates = currentState.NextStates();
-                foreach (State state in nextStates)
-                {
-                    F.Add(new StateWrapper(state.Heuristic, state));
-                }
+                F.AddRange(currentState.NextStates());
+
+                F = F.OrderBy(state => state.Cost).ToList(); // sort list by state cost
             }
 
             Console.ReadKey();
