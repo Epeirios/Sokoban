@@ -286,3 +286,15 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+Sokoban/bin/Debug/Sokoban\.exe
+
+Sokoban/obj/Debug/DesignTimeResolveAssemblyReferencesInput\.cache
+
+Sokoban/obj/Debug/Sokoban\.csproj\.CoreCompileInputs\.cache
+
+Sokoban/obj/Debug/Sokoban\.csproj\.FileListAbsolute\.txt
+
+Sokoban/obj/Debug/Sokoban\.csprojResolveAssemblyReference\.cache
+
+Sokoban/obj/Debug/Sokoban\.exe
