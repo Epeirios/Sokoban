@@ -14,7 +14,7 @@ namespace Sokoban
             // als de oplossing gevonden is dan is de laatste state de currentstate,
             // welke dan gelijk is aan de goal state.
 
-            SortedList<int, State> F = new SortedList<int, State>();
+            List<StateWrapper> F = new List<StateWrapper>();
 
             bool[,] map = new bool[,] 
             { 
@@ -22,38 +22,39 @@ namespace Sokoban
                 { false, true, true, true, false },
                 { false, true, true, true, false },
                 { false, true, true, true, false },
-                { false, true, true, false, false },
-                { false, true, true, false, false },
-                { false, true, true, false, false },
+                { false, true, true, true, false },
+                { false, true, true, true, false },
+                { false, true, true, true, false },
                 { false, false, false, false, false },
             };
 
             State startState = new State(
-                new Context(map, new Coord[] { new Coord(1, 4), new Coord(1, 5) }), 
+                new Context(map, new Coord[] { new Coord(3, 6) }), 
                 null, 
                 new Coord(1, 1), 
-                new Coord[] { new Coord(2, 3), new Coord(2, 4) },
+                new Coord[] { new Coord(2, 3) },
                 0);
 
-            F.Add(startState.Heuristic, startState);
+            F.Add(new StateWrapper(startState.Heuristic, startState));
 
             while (F.Count != 0)
             {
-                State currentState = F.Values[0];
-                Console.WriteLine("State : " + currentState.Player.X + " " + currentState.Player.Y);
+                State currentState = F[0].state;
+                Console.WriteLine("state : " + currentState.Player.X + " - " + currentState.Player.Y);
 
                 F.RemoveAt(0);
 
                 if (currentState.GoalCheck())
                 {
-                    Console.WriteLine("Fuck Yeah!!!");
+                    Console.WriteLine("Solution Found!");
+
                     break;
                 }
 
                 State[] nextStates = currentState.NextStates();
                 foreach (State state in nextStates)
                 {
-                    F.Add(state.Heuristic, state);
+                    F.Add(new StateWrapper(state.Heuristic, state));
                 }
             }
 
