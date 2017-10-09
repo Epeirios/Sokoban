@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -127,7 +128,15 @@ namespace Sokoban
                 new Coord[] { new Coord(2, 2), new Coord(2, 4) },
             0, Direction.Left);
 
-            SokobanSolver(game5);
+            Stopwatch stopwatch = new Stopwatch();
+
+            stopwatch.Start();
+
+            SokobanSolver(game1);
+
+            stopwatch.Start();
+
+            Console.WriteLine("\nTime: {0}", stopwatch.Elapsed.ToString());
 
             Console.ReadKey();
         }
@@ -141,7 +150,7 @@ namespace Sokoban
             while (F.Count != 0)
             {
                 State currentState = F[0];
-                Console.WriteLine("State : {0} {1} - {2} - {3} {4}", currentState.Player.X, currentState.Player.Y, currentState.Cost, currentState.Chests[0].X, currentState.Chests[0].Y);
+                //Console.WriteLine("State : {0} {1} - {2} - {3} {4}", currentState.Player.X, currentState.Player.Y, currentState.Cost, currentState.Chests[0].X, currentState.Chests[0].Y);
 
                 F.RemoveAt(0);
 
