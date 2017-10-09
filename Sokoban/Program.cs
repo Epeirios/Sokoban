@@ -29,26 +29,114 @@ namespace Sokoban
 
             List<State> F = new List<State>();
 
-            bool[,] map = new bool[,]
+            bool[,] map1 = new bool[,]
             {
                 { false, false, false, false, false },
-                { false, true, true, true, false },
-                { false, true, true, true, false },
-                { false, true, true, true, false },
-                { false, true, true, true, false },
-                { false, true, true, true, false },
-                { false, true, true, true, false },
-                { false, false, false, false, false },
+                { false, true , true , true , false },
+                { false, true , true , true , false },
+                { false, true , true , true , false },
+                { false, true , true , true , false },
+                { false, true , true , true , false },
+                { false, true , true , true , false },
+                { false, false, false, false, false }
             };
 
-            State startState = new State(
-                new Context(map, new Coord[] { new Coord(3, 6) }),
+            bool[,] map2 = new bool[,]
+            {
+                { false, false, false, false, false, false, false, false, false, false, false },
+                { false, false, false, false, false, false, false, true , true , true , false },
+                { false, true , true , true , true , true , true , true , true , true , false },
+                { false, true , true , true , true , true , true , true , true , true , false },
+                { false, true , true , true , true , true , true , true , true , true , false },
+                { false, true , false, true , false, false, false, false, false, false, false },
+                { false, true , true , true , false, false, false, false, false, false, false },
+                { false, false, false, false, false, false, false, false, false, false, false }
+            };
+
+            bool[,] map3 = new bool[,]
+            {
+                { false, false, false, false, false, false, false, false, false, false, false },
+                { false, false, true , true , true , true , true , true , true , false, false },
+                { false, false, true , false, false, false, false, false, true , false, false },
+                { false, true , true , false, true , true , true , false, true , false, false },
+                { false, true , true , true , true , true , true , false, true , false, false },
+                { false, false, true , false, false, true , false, false, true , false, false },
+                { false, false, true , true , true , true , true , true , true , true , false },
+                { false, false, true , false, false, false, false, true , true , true , false },
+                { false, false, true , true , true , true , true , true , false, false, false },
+                { false, false, false, false, false, false, false, false, false, false, false }
+            };
+
+            bool[,] map4 = new bool[,]
+            {
+                { false, false, false, false, false },
+                { false, true , true , true , false },
+                { false, true , true , true , false },
+                { false, true , true , true , false },
+                { false, true , true , true , false },
+                { false, true , true , true , false },
+                { false, true , true , true , false },
+                { false, false, false, false, false }
+               };
+
+            bool[,] map5 = new bool[,]
+            {
+                { false, false, false, false, false },
+                { false, true , true , true , false },
+                { false, true , true , true , false },
+                { false, false, true , true , false },
+                { false, false, true , true , false },
+                { false, false, true , true , false },
+                { false, false, false, false, false }
+            };
+
+            State game1 = new State(
+                new Context(map1, new Coord[] { new Coord(3, 6) }),
                 null,
                 new Coord(1, 1),
                 new Coord[] { new Coord(2, 3) },
-                0);
+                0, Direction.Left);
 
-            F.Add(startState);
+            State game2 = new State(
+                new Context(map2, new Coord[] { new Coord(1, 3), new Coord(2, 3), new Coord(3, 3), new Coord(4, 3),
+                                                new Coord(5, 3), new Coord(6, 3), new Coord(7, 3), new Coord(8, 3), new Coord(9, 3) }),
+                null,
+                new Coord(8, 1),
+                new Coord[] { new Coord(2, 2), new Coord(4, 2), new Coord(6, 2), new Coord(7, 2), new Coord(8, 2),
+                              new Coord(1, 4), new Coord(3, 4), new Coord(5, 4), new Coord(7, 4)},
+                0, Direction.Left);
+
+            State game3 = new State(
+                new Context(map3, new Coord[] { new Coord(2, 2), new Coord(2, 5), new Coord(2, 7) }),
+                null,
+                new Coord(5, 4),
+                new Coord[] { new Coord(8, 3), new Coord(8, 4), new Coord(8, 5) },
+                0, Direction.Left);
+
+            State game4 = new State(
+                new Context(map1, new Coord[] { new Coord(3, 6) }),
+                null,
+                new Coord(1, 1),
+                new Coord[] { new Coord(2, 3) },
+            0, Direction.Left);
+
+            State game5 = new State(
+                new Context(map5, new Coord[] { new Coord(3, 3), new Coord(3, 6) }),
+                null,
+                new Coord(1, 1),
+                new Coord[] { new Coord(2, 2), new Coord(2, 4) },
+            0, Direction.Left);
+
+            SokobanSolver(game5);
+
+            Console.ReadKey();
+        }
+
+        private static void SokobanSolver(State initialState)
+        {
+            List<State> F = new List<State>();
+
+            F.Add(initialState);
 
             while (F.Count != 0)
             {
@@ -68,8 +156,6 @@ namespace Sokoban
 
                 F = F.OrderBy(state => state.Cost).ToList(); // sort list by state cost
             }
-
-            Console.ReadKey();
         }
     }
 }

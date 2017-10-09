@@ -15,6 +15,7 @@ namespace Sokoban
 
         private Coord player;
         private readonly Coord[] chests;
+        private Direction direction;
 
         public State PreviousState
         {
@@ -28,7 +29,7 @@ namespace Sokoban
         {
             get
             {
-                return pathcost;
+                return pathcost + heuristic;
             }
         }
 
@@ -48,18 +49,19 @@ namespace Sokoban
             }
         }
 
-        public State(Context context, State previousState, Coord player, Coord[] chests, int pathcost)
+        public State(Context context, State previousState, Coord player, Coord[] chests, int pathcost, Direction direction)
         {
             this.context = context;
             this.previousState = previousState;
             this.player = player;
             this.chests = chests;
             this.pathcost = pathcost + 1;
+            this.direction = direction;
 
             this.heuristic = CalcHeuristic();
         }
 
-        public State[] NextStates()
+        public State[] NextStates() // returned een lijst met states die mogelijk zijn vanaf this.state
         {
             List<State> nextStates = new List<State>();
 
@@ -75,48 +77,51 @@ namespace Sokoban
                     newChests[i] = new Coord(chests[i].X, chests[i].Y);
                 }
                 // END Workaround
-         
+
                 bool stateValid = false;
 
-                switch (direction)
+                if ((int)direction != (int)(this.direction + 2) % 4)
                 {
-                    case Direction.Up:
-                        if (context.Map[y - 1, x])
-                        {
-                            y = y - 1;
-                            newChests = NewChests(x, y, direction, newChests);
-                            stateValid = true;
-                        }
-                        break;
-                    case Direction.Down:
-                        if (context.Map[y + 1, x])
-                        {
-                            y = y + 1;
-                            newChests = NewChests(x, y, direction, newChests);
-                            stateValid = true;
-                        }
-                        break;
-                    case Direction.Left:
-                        if (context.Map[y, x - 1])
-                        {
-                            x = x - 1;
-                            newChests = NewChests(x, y, direction, newChests);
-                            stateValid = true;
-                        }
-                        break;
-                    case Direction.Right:
-                        if (context.Map[y, x + 1])
-                        {
-                            x = x + 1;
-                            newChests = NewChests(x, y, direction, newChests);
-                            stateValid = true;
-                        }
-                        break;
+                    switch (direction)
+                    {
+                        case Direction.Up:
+                            if (context.Map[y - 1, x])
+                            {
+                                y = y - 1;
+                                newChests = NewChests(x, y, direction, newChests);
+                                stateValid = true;
+                            }
+                            break;
+                        case Direction.Down:
+                            if (context.Map[y + 1, x])
+                            {
+                                y = y + 1;
+                                newChests = NewChests(x, y, direction, newChests);
+                                stateValid = true;
+                            }
+                            break;
+                        case Direction.Left:
+                            if (context.Map[y, x - 1])
+                            {
+                                x = x - 1;
+                                newChests = NewChests(x, y, direction, newChests);
+                                stateValid = true;
+                            }
+                            break;
+                        case Direction.Right:
+                            if (context.Map[y, x + 1])
+                            {
+                                x = x + 1;
+                                newChests = NewChests(x, y, direction, newChests);
+                                stateValid = true;
+                            }
+                            break;
+                    }
                 }
 
                 if (stateValid && (newChests != null))
                 {
-                    nextStates.Add(new State(context, this, new Coord(x, y), newChests, pathcost));
+                    nextStates.Add(new State(context, this, new Coord(x, y), newChests, pathcost, direction));
                 }
             }
 
@@ -198,15 +203,13 @@ namespace Sokoban
         {
             int heuristic = 0;
 
-            List<int> playerChestDistances = new List<int>();
-
             foreach (Coord chest in chests)
             {
-                int shortestpath = CalculateManhattan(context.Targets[0], chests[0]) - 1;
+                int shortestpath = CalculateManhattan(context.Targets[0], chests[0]);
 
                 foreach (Coord target in context.Targets)
                 {
-                    int manhattan = CalculateManhattan(target, chest) - 1;
+                    int manhattan = CalculateManhattan(target, chest);
 
                     if (manhattan < shortestpath)
                     {
@@ -214,12 +217,10 @@ namespace Sokoban
                     }
                 }
 
-                playerChestDistances.Add(CalculateManhattan(player, chest)); // distance from player to chest
-
                 heuristic += shortestpath; // add only the shortest to ensure optimality of algorithm
             }
 
-            return heuristic + (int)playerChestDistances.Average();
+            return heuristic;
         }
 
         private static int CalculateManhattan(Coord coordA, Coord coordB)
